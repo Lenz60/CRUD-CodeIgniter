@@ -21,10 +21,11 @@ $date = date('Y-m-d');
 // );
 
 // echo (date("d-M-Y", strtotime($formatter)));
-$newDate = date("d-M-Y", strtotime($date));
+// $newDate = date("d-M-Y", strtotime($date));
 
-echo strftime("%A, %e %B %Y", $newDate);
+// echo strftime("%A, %e %B %Y", $newDate);
 
+echo time();
 // print_r(date("d-M-Y", strtotime($date)));
 
 

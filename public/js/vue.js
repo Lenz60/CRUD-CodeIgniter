@@ -11,7 +11,9 @@ vue.mount('#table')
 $(document).ready(function () {
     $('#example').DataTable({
         "lengthChange" : false,
+        "pageLength": 5,
         "searching": false,
+        "pagingType": 'full_numbers',
         
     })
 });

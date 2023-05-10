@@ -43,10 +43,7 @@
             <h1 class="h3 mb-0 text-gray-800">Project</h1>
         </div>
 
-        <p class="text-green-500">Test</p>
-
         <div>
-
             <div class="w-full border-2 border-gray-600 justify-center items-center">
                 <form action="/filter" method="POST">
                     <div class="grid grid-cols-5 m-2 gap-x-2 w-auto">
@@ -58,10 +55,9 @@
                         <div class="grid grid-rows-2 justify-center items-center">
                             <p>Client</p>
                             <select name="filterClient" id="filterClient" class="border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full">
-                                <option value="Client1">Client1</option>
-                                <option value="Client1">Client1</option>
-                                <option value="Client1">Client1</option>
-                                <option value="Client1">Client1</option>
+                                <?php foreach ($client as $row) : ?>
+                                    <option value="<?= $row->client_id; ?>"><?= $row->client_name; ?></option>
+                                <?php endforeach; ?>
                             </select>
                         </div>
                         <div class="grid grid-rows-2 justify-center items-center">
@@ -108,114 +104,17 @@
                         </tr>
                     </thead>
                     <tbody class="text-black">
-                        <tr>
-                            <td><input name="selectId" type="checkbox"></td>
-                            <td>Malcolm Lockyer</td>
-                            <td>1961</td>
-                            <td>1961</td>
-                            <td>1961</td>
-                            <td>1961</td>
-                            <td>1961</td>
-                        </tr>
-                        <tr>
-                            <td><input name="selectId" type="checkbox"></td>
-                            <td>The Eagles</td>
-                            <td>1972</td>
-                            <td>1972</td>
-                            <td>1972</td>
-                            <td>1972</td>
-                            <td>1972</td>
-                        </tr>
-                        <tr>
-                            <td><input name="selectId" type="checkbox"></td>
-                            <td>Earth, Wind, and Fire</td>
-                            <td>1975</td>
-                            <td>1975</td>
-                            <td>1975</td>
-                            <td>1975</td>
-                            <td>1975</td>
-                        </tr>
-                        <tr>
-                            <td><input name="selectId" type="checkbox"></td>
-                            <td>Malcolm Lockyer</td>
-                            <td>1961</td>
-                            <td>1961</td>
-                            <td>1961</td>
-                            <td>1961</td>
-                            <td>1961</td>
-                        </tr>
-                        <tr>
-                            <td><input name="selectId" type="checkbox"></td>
-                            <td>The Eagles</td>
-                            <td>1972</td>
-                            <td>1972</td>
-                            <td>1972</td>
-                            <td>1972</td>
-                            <td>1972</td>
-                        </tr>
-                        <tr>
-                            <td><input name="selectId" type="checkbox"></td>
-                            <td>Earth, Wind, and Fire</td>
-                            <td>1975</td>
-                            <td>1975</td>
-                            <td>1975</td>
-                            <td>1975</td>
-                            <td>1975</td>
-                        </tr>
-                        <tr>
-                            <td><input name="selectId" type="checkbox">)</td>
-                            <td>Malcolm Lockyer</td>
-                            <td>1961</td>
-                            <td>1961</td>
-                            <td>1961</td>
-                            <td>1961</td>
-                            <td>1961</td>
-                        </tr>
-                        <tr>
-                            <td><input name="selectId" type="checkbox"></td>
-                            <td>The Eagles</td>
-                            <td>1972</td>
-                            <td>1972</td>
-                            <td>1972</td>
-                            <td>1972</td>
-                            <td>1972</td>
-                        </tr>
-                        <tr>
-                            <td><input name="selectId" type="checkbox"></td>
-                            <td>Earth, Wind, and Fire</td>
-                            <td>1975</td>
-                            <td>1975</td>
-                            <td>1975</td>
-                            <td>1975</td>
-                            <td>1975</td>
-                        </tr>
-                        <tr>
-                            <td><input name="selectId" type="checkbox"></td>
-                            <td>Malcolm Lockyer</td>
-                            <td>1961</td>
-                            <td>1961</td>
-                            <td>1961</td>
-                            <td>1961</td>
-                            <td>1961</td>
-                        </tr>
-                        <tr>
-                            <td><input name="selectId" type="checkbox"></td>
-                            <td>The Eagles</td>
-                            <td>1972</td>
-                            <td>1972</td>
-                            <td>1972</td>
-                            <td>1972</td>
-                            <td>1972</td>
-                        </tr>
-                        <tr>
-                            <td><input name="selectId" type="checkbox"></td>
-                            <td>Earth, Wind, and Fire</td>
-                            <td>1975</td>
-                            <td>1975</td>
-                            <td>1975</td>
-                            <td>1975</td>
-                            <td>1975</td>
-                        </tr>
+                        <?php foreach ($project as $row) : ?>
+                            <tr>
+                                <td><input name="selectId" type="checkbox"></td>
+                                <td><a href="/edit">edit</a></td>
+                                <td><?= $row->project_name; ?></td>
+                                <td><?= $row->client_name; ?></td>
+                                <td><?= date('d-M-Y', strtotime($row->project_start)); ?></td>
+                                <td><?= date('d-M-Y', strtotime($row->project_end)); ?></td>
+                                <td><?= $row->project_status; ?></td>
+                            </tr>
+                        <?php endforeach; ?>
                     </tbody>
                 </table>
                 <p>{{message}}</p>

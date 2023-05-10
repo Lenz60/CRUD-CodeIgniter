@@ -30,13 +30,13 @@ class DashboardController extends BaseController
         helper('jwt');
         try {
             $decoded_token = validateJWT($token);
+            $result = $model->show($decoded_token->email);
         } catch (Exception $e) {
             $session->setFlashdata('message', '<div class="p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-300 dark:bg-gray-800 dark:text-red-400" role="alert">
             <span class="font-medium">Session Expired</span>, Please login again
             </div>');
             return redirect()->to('/auth');
         }
-        $result = $model->show($decoded_token->email);
         if (!$result) {
             $data['title'] = 'Login';
             $session->setFlashdata('message', 'Session expired, Please login again');
