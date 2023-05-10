@@ -23,5 +23,7 @@ this is also built in smtp gmail too.
 4. Run `npx mix` to ensure tailwindcss do its work!
 5. Run the development server via `php spark serve`
 6. To migrate the databases, run `php spark migrate` or `php spark migrate:refresh`
+7. To seed the existing data, run `php spark db:seed TbMClient` first, then `php spark db:seed TbMProject`
+8. To use template user run the `Users` seed using `php spark db:seed Users`
 
 Thats all, Thankyou
