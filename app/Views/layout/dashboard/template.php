@@ -48,6 +48,19 @@
 
             <!-- Divider -->
             <hr class="sidebar-divider d-none d-md-block">
+            <!-- Heading -->
+            <div class="sidebar-heading">
+                PROJECT DATABASE
+            </div>
+            <!-- Nav Item - Project Data -->
+            <li class="nav-item active">
+                <a class="nav-link" href="/project">
+                    <i class="fa-solid fa-list-check"></i>
+                    <span>Project Data</span></a>
+            </li>
+
+            <!-- Divider -->
+            <hr class="sidebar-divider d-none d-md-block">
 
             <!-- Sidebar Toggler (Sidebar) -->
             <div class="text-center d-none d-md-inline">
