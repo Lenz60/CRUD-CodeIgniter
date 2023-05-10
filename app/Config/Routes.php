@@ -43,6 +43,7 @@ $routes->get('/auth/verify', 'AuthController::verify');
 $routes->get('/auth/forgot', 'AuthController::forgotIndex');
 $routes->post('/auth/forgot', 'AuthController::forgotPassword');
 $routes->post('/auth/reset', 'AuthController::resetPassword');
+$routes->get('/test', 'testController');
 // $routes->get('/auth/reset', 'AuthController::resetPassword');
 // $routes->post('/auth/checkReset', 'AuthController::checkReset');
 // $routes->post('/auth/reset', 'AuthController::resetPassword');
