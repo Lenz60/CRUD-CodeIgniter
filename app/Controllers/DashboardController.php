@@ -4,14 +4,10 @@ namespace App\Controllers;
 
 use App\Models\DashboardModel;
 use App\Controllers\BaseController;
-
+use App\Models\UserModel;
 
 class DashboardController extends BaseController
 {
-    public function __construct()
-    {
-        $this->model = new DashboardModel();
-    }
     public function index()
     {
         //
@@ -30,7 +26,7 @@ class DashboardController extends BaseController
     {
         $session = \Config\Services::session();
         $token = $_COOKIE['COOKIE-SESSION'];
-        $model = new DashboardModel();
+        $model = new UserModel();
         $result = $model->show($token);
         $data = [
             'title' => 'Dashboard',
