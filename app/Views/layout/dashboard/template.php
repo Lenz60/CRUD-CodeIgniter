@@ -19,6 +19,9 @@
     <!-- Custom styles for this template-->
     <link href="/assets/css/sb-admin-2.min.css" rel="stylesheet">
 
+    <!-- datatables -->
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css">
+
 </head>
 
 <body id="page-top">
@@ -83,6 +86,7 @@
         <!-- Bootstrap core JavaScript-->
         <script src="/assets/jquery/jquery.min.js"></script>
         <script src="/assets/bootstrap/js/bootstrap.bundle.min.js"></script>
+        <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
 
         <!-- Core plugin JavaScript-->
         <script src="/assets/jquery-easing/jquery.easing.min.js"></script>
