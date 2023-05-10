@@ -42,7 +42,7 @@ KEY = 'password'
 #--------------------------------------------------------------------
 
 database.default.hostname = localhost
-database.default.database = loginPage
+database.default.database = db_project_rafly
 database.default.username = root
 database.default.password = 
 database.default.DBDriver = MySQLi
