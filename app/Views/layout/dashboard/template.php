@@ -19,8 +19,13 @@
     <!-- Custom styles for this template-->
     <link href="/assets/css/sb-admin-2.min.css" rel="stylesheet">
 
+    <!-- Tailwindcss -->
+    <link rel="stylesheet" href="/css/app.css">
+
+
     <!-- datatables -->
-    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.css" />
+    <!-- <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css"> -->
 
 </head>
 
@@ -86,7 +91,17 @@
         <!-- Bootstrap core JavaScript-->
         <script src="/assets/jquery/jquery.min.js"></script>
         <script src="/assets/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+        <!-- vuejs -->
+        <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+        <script src="/js/vue.js"></script>
+
+        <!-- datatables -->
+        <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.js"></script>
+        <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
         <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+
+
 
         <!-- Core plugin JavaScript-->
         <script src="/assets/jquery-easing/jquery.easing.min.js"></script>
@@ -94,12 +109,6 @@
         <!-- Custom scripts for all pages-->
         <script src="/assets/js/sb-admin-2.min.js"></script>
 
-        <!-- Page level plugins -->
-        <script src="/assets/chart.js/Chart.min.js"></script>
-
-        <!-- Page level custom scripts -->
-        <script src="/assets/js/demo/chart-area-demo.js"></script>
-        <script src="/assets/js/demo/chart-pie-demo.js"></script>
     </div>
     <!-- End of Page Wrapper -->
 
