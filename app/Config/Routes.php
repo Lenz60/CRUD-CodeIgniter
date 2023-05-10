@@ -36,6 +36,8 @@ $routes->post('/login', 'AuthController::login');
 $routes->get('/register', 'AuthController::registerIndex');
 $routes->post('/register', 'AuthController::register');
 $routes->get('/dashboard', 'DashboardController');
+$routes->get('/project', 'ProjectController');
+$routes->post('/project', 'ProjectController');
 $routes->post('/auth/verify', 'AuthController::verify');
 $routes->get('/auth/verify', 'AuthController::verify');
 $routes->get('/auth/forgot', 'AuthController::forgotIndex');
