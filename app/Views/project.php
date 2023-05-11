@@ -55,6 +55,7 @@
                         <div class="grid grid-rows-2 justify-center items-center">
                             <p>Client</p>
                             <select name="filterClient" id="filterClient" class="border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full">
+                                <option value=""> </option>
                                 <?php foreach ($client as $row) : ?>
                                     <option value="<?= $row->client_id; ?>"><?= $row->client_name; ?></option>
                                 <?php endforeach; ?>
@@ -63,7 +64,7 @@
                         <div class="grid grid-rows-2 justify-center items-center">
                             <p>Status</p>
                             <select name="filterStatus" id="filterStatus" class="border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5">
-                                <option value="All Status">All Status</option>
+                                <option value="">All Status</option>
                                 <option value="OPEN">OPEN</option>
                                 <option value="DOING">DOING</option>
                                 <option value="DONE">DONE</option>
@@ -110,8 +111,8 @@
                                 <td><a href="/edit">edit</a></td>
                                 <td><?= $row->project_name; ?></td>
                                 <td><?= $row->client_name; ?></td>
-                                <td><?= date('d-M-Y', strtotime($row->project_start)); ?></td>
-                                <td><?= date('d-M-Y', strtotime($row->project_end)); ?></td>
+                                <td id="dateProjectStart">{{translateMonth(<?= strtotime($row->project_start); ?>)}}</td>
+                                <td id="dateProjectStart">{{translateMonth(<?= strtotime($row->project_end); ?>)}}</td>
                                 <td><?= $row->project_status; ?></td>
                             </tr>
                         <?php endforeach; ?>
