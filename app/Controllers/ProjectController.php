@@ -114,4 +114,25 @@ class ProjectController extends BaseController
         // return $data;
         return view('project');
     }
+    public function create()
+    {
+        $projectModel = new ProjectModel();
+        $projectName = $this->request->getVar('newProjectName');
+        $clientId = $this->request->getVar('newProjectClient');
+        $projectStart = $this->request->getVar('newProjectStart');
+        $projectEnd = $this->request->getVar('newProjectEnd');
+        $projectStatus = $this->request->getVar('newProjectStatus');
+
+        $data = [
+            'project_name' => $projectName,
+            'client_id' => $clientId,
+            'project_start' => $projectStart,
+            'project_end' => $projectEnd,
+            'project_status' => $projectStatus,
+        ];
+
+        $projectModel->create($data);
+        $this->showTable();
+        return view('project');
+    }
 }

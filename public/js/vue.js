@@ -25,7 +25,21 @@ const filter = Vue.createApp({
     }
 })
 
+const crud = Vue.createApp({
+    data(){
+
+    },
+    methods:{
+        create(e){
+            // console.log('hello')
+            document.getElementById("createForm").submit();
+        }
+    }
+})
+
+
 filter.mount('#filter')
+crud.mount('#createModal')
 vue.mount('#table')
 
 $(document).ready(function () {
@@ -34,6 +48,7 @@ $(document).ready(function () {
         "pageLength": 5,
         "searching": false,
         "pagingType": 'full_numbers',
+        "sPaginationType": 'extStyle'
         
     })
 });

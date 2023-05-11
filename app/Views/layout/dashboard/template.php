@@ -164,12 +164,14 @@
 
         <!-- vuejs -->
         <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+        <script src="https://www.unpkg.com/usemodal-vue3"></script>
         <script src="/js/vue.js"></script>
 
         <!-- datatables -->
         <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.js"></script>
         <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
         <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+        <script src="https://cdn.datatables.net/plug-ins/1.13.4/pagination/extjs.js"></script>
 
 
 

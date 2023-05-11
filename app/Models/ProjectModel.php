@@ -9,7 +9,7 @@ class ProjectModel extends Model
     protected $DBGroup          = 'default';
     protected $table            = 'tb_m_project';
     protected $primaryKey       = 'project_id';
-
+    protected $allowedFields    = ['project_name', 'client_id', 'project_start', 'project_end', 'project_status'];
 
     public function showData()
     {
@@ -86,5 +86,16 @@ class ProjectModel extends Model
         $data = $builder->get();
         // dd($data->getResult());
         return $data;
+    }
+
+    public function create($data)
+    {
+
+        $builder = $this->table('tb_m_project');
+        if ($builder->save($data)) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }
