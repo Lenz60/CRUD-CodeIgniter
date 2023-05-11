@@ -36,11 +36,13 @@ function validateJWT($token)
         $decoded_token = JWT::decode($token, new Key($key, 'HS256'));
         return $decoded_token;
     } catch (Exception $e) {
-        setcookie('COOKIE-SESSION', null);
-        $session->setFlashdata('message', '<div class="p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-300 dark:bg-gray-800 dark:text-red-400" role="alert">
-                <span class="font-medium">Token Invalid</span>, Please login again
-              </div>');
-        // echo $e->getMessage();
-        return redirect()->to('/auth');
+        if ($e->getMessage() == "Expired token") {
+            setcookie('COOKIE-SESSION', null);
+            $session->setFlashdata('message', '<div class="p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-300 dark:bg-gray-800 dark:text-red-400" role="alert">
+                    <span class="font-medium">Token Invalid</span>, Please login again
+                  </div>');
+            // echo $e->getMessage();
+            return redirect()->to('/auth');
+        }
     }
 }
