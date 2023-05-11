@@ -14,27 +14,41 @@
         </div>
 
         <div>
-            <div class="w-full border-2 border-gray-600 justify-center items-center">
+            <div id="filter" class="w-full border-2 border-gray-600 justify-center items-center">
                 <form action="/filter" method="POST">
                     <div class="grid grid-cols-5 m-2 gap-x-2 w-auto">
                         <div class="cols-span-2 flex items-center justify-center">Filter</div>
                         <div class="grid grid-rows-2 justify-center items-center">
                             <p>Project Name</p>
-                            <input type="text" name="filterProjectName" class="border border-gray-300 text-gray-900 sm:text-sm rounded-sm focus:ring-primary-600 focus:border-primary-600 block w-full">
+                            <input type="text" value="<?php if (!isset($filterProjectNamePH)) {
+                                                            echo "";
+                                                        } else {
+                                                            echo $filterProjectNamePH;
+                                                        } ?>" name="filterProjectName" class="border border-gray-300 text-gray-900 sm:text-sm rounded-sm focus:ring-primary-600 focus:border-primary-600 block w-full">
                         </div>
                         <div class="grid grid-rows-2 justify-center items-center">
                             <p>Client</p>
                             <select name="filterClient" id="filterClient" class="border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full">
+                                <?php if (isset($filterClientPH)) {
+                                ?>
+                                    <option selected disabled value="<?= $filterClientPH; ?>"><?= $filterClientPH; ?></option>
+                                <?php
+                                } ?>
                                 <option value="all">All Client</option>
                                 <?php foreach ($client as $row) : ?>
-                                    <option value="<?= $row->client_id; ?>"><?= $row->client_name; ?></option>
+                                    <option value="<?= $row->client_name; ?>"><?= $row->client_name; ?></option>
                                 <?php endforeach; ?>
                             </select>
                         </div>
                         <div class="grid grid-rows-2 justify-center items-center">
                             <p>Status</p>
                             <select name="filterStatus" id="filterStatus" class="border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5">
-                                <option value="">All Status</option>
+                                <?php if (isset($filterStatusPH)) {
+                                ?>
+                                    <option selected disabled value="<?= $filterStatusPH; ?>"><?= $filterStatusPH; ?></option>
+                                <?php
+                                } ?>
+                                <option value="all">All Status</option>
                                 <option value="OPEN">OPEN</option>
                                 <option value="DOING">DOING</option>
                                 <option value="DONE">DONE</option>
@@ -43,10 +57,10 @@
                         <div class="grid grid-row-1">
                             <div class="grid grid-cols-2 pb-1 justify-end items-end">
                                 <div class="flex justify-center">
-                                    <button class="inline-flex items-center justify-center rounded-md border border-transparent bg-primary-600 px-3 py-1 text-base font-medium text-white hover:bg-primary-700">Search</button>
+                                    <button type="submit" class="inline-flex items-center justify-center rounded-md border border-transparent bg-primary-600 px-3 py-1 text-base font-medium text-white hover:bg-primary-700">Search</button>
                                 </div>
                                 <div class="flex justify-center">
-                                    <button class="inline-flex items-center justify-center rounded-md border border-transparent bg-primary-600 px-3 py-1 text-base font-medium text-white hover:bg-primary-700">Clear</button>
+                                    <button @click.native="resetButton" type="reset" class="inline-flex items-center justify-center rounded-md border border-transparent bg-primary-600 px-3 py-1 text-base font-medium text-white hover:bg-primary-700">Clear</button>
                                 </div>
                             </div>
                         </div>
@@ -77,7 +91,7 @@
                     <tbody class="text-black">
                         <?php foreach ($project as $row) : ?>
                             <tr>
-                                <td><input name="selectId" type="checkbox"></td>
+                                <td><input name="selectId" value="<?= $row->project_name; ?>" type="checkbox"></td>
                                 <td><a href="/edit">edit</a></td>
                                 <td><?= $row->project_name; ?></td>
                                 <td><?= $row->client_name; ?></td>

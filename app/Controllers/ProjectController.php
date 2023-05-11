@@ -20,16 +20,8 @@ class ProjectController extends BaseController
             $session->setFlashdata('message', 'Session expired, Please login again');
             return view('login', $data);
         } else {
-            $user = $this->user();
-            $table = $this->showTable();
-            $data = [
-                'title' => $user['title'],
-                'name' => $user['name'],
-                'image' => $user['image'],
-                'project' => $table['project'],
-                'client' => $table['client'],
-            ];
-            return view('project', $data);
+            $this->showTable();
+            return view('project');
         }
     }
 
@@ -42,13 +34,7 @@ class ProjectController extends BaseController
         helper('jwt');
         //decode header token jwt
         $decoded_token = validateJWT($token);
-        try {
-            $user = $userModel->show($decoded_token->email);
-        } catch (RedirectException $e) {
-            $data['title'] = 'Login';
-            $session->setFlashdata('message', 'Session expired, Please login again');
-            return view('login', $data);
-        }
+        $user = $userModel->show($decoded_token->email);
         //check if user correct with token payload
         if (!$user) {
         } else {
@@ -63,38 +49,69 @@ class ProjectController extends BaseController
 
     public function showTable()
     {
+        $user = $this->user();
         $projectModel = new ProjectModel();
-        $result = $projectModel->showData();
-        if (!$result) {
-            //Flashdata here
+        $projectName = $this->request->getVar('filterProjectName');
+        $clientName = $this->request->getVar('filterClient');
+        $projectStatus = $this->request->getVar('filterStatus');
+        if ($clientName == null) {
+            $result = $projectModel->showData();
+            if (!$result) {
+                //Flashdata here
+            } else {
+                $client = $projectModel->getClient();
+                $data = [
+                    'title' => $user['title'],
+                    'name' => $user['name'],
+                    'image' => $user['image'],
+                    'project' => $result->getResult(),
+                    'client' => $client->getResult(),
+                ];
+            }
         } else {
+            $data = [
+                'project_name' => $projectName,
+                'client_id' => $clientName,
+                'project_status' => $projectStatus,
+            ];
+            $result = $projectModel->showDataWhere($data);
             $client = $projectModel->getClient();
             $data = [
+                'title' => $user['title'],
+                'name' => $user['name'],
+                'image' => $user['image'],
                 'project' => $result->getResult(),
                 'client' => $client->getResult(),
+                'filterProjectNamePH' => $projectName,
+                'filterClientPH' => $clientName,
+                'filterStatusPH' => $projectStatus,
             ];
-            return $data;
         }
+        return view('project', $data);
+    }
+
+    public function filter()
+    {
+        $session = \Config\Services::session();
+        $projectModel = new ProjectModel();
+        $projectName = $this->request->getVar('filterProjectName');
+        $clientId = $this->request->getVar('filterClient');
+        $projectStatus = $this->request->getVar('filterStatus');
+
+        $data = [
+            'project_name' => $projectName,
+            'client_id' => $clientId,
+            'project_status' => $projectStatus,
+        ];
+        $result = $projectModel->showDataWhere($data);
+        $client = $projectModel->getClient();
+        $data = [
+            'project' => $result->getResult(),
+            'client' => $client->getResult(),
+        ];
+
+        // dd($data['project']);
+        // return $data;
+        return view('project');
     }
 }
-
-
-
-
-
-
-// if (!$result && !$client) {
-//     echo 'Database empty';
-// } else {
-//     $data = [
-//         'title' => 'Project Data',
-//         'project' => $result->getResult(),
-//         'client' => $client->getResult(),
-//         'email' => $user['email'],
-//         'name' => $user['name'],
-//         'image' => $user['image'],
-//         'date_created' => $user['date_created']
-//     ];
-//     // dd($data);
-//     return view('project', $data);
-// }
