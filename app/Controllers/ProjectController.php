@@ -88,7 +88,6 @@ class ProjectController extends BaseController
             } else {
                 $client = $projectModel->getClient();
                 $data = [
-                    'filter' => false,
                     'title' => $user['title'],
                     'name' => $user['name'],
                     'image' => $user['image'],
@@ -124,7 +123,6 @@ class ProjectController extends BaseController
         $result = $projectModel->showDataWhere($data);
         $client = $projectModel->getClient();
         $data = [
-            'filter' => true,
             'title' => $table['title'],
             'name' => $table['name'],
             'image' => $table['image'],
@@ -201,9 +199,16 @@ class ProjectController extends BaseController
                 'project_status' => $projectStatus,
             ];
             $projectModel->create($data);
-            $this->showTable();
+            $table = $this->showTable();
+            $data = [
+                'title' => $table['title'],
+                'name' => $table['name'],
+                'image' => $table['image'],
+                'project' => $table['project'],
+                'client' => $table['client'],
+            ];
             $session->setFlashdata('message', 'Project successfully created');
-            return view('project');
+            return view('project', $data);
         }
     }
 }
