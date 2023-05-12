@@ -141,6 +141,7 @@ class ProjectController extends BaseController
         $table = $this->showTable();
         $user = $this->user();
 
+
         $data = [
             'project_name' => $projectName,
             'client_id' => $clientId,
@@ -149,6 +150,7 @@ class ProjectController extends BaseController
         $result = $projectModel->showDataWhere($data);
         $client = $clientModel->getClient();
         $data = [
+            'filter' => true,
             'title' => $table['title'],
             'name' => $table['name'],
             'image' => $table['image'],
@@ -164,7 +166,7 @@ class ProjectController extends BaseController
         // return $data;
         // echo "Why blank";
         // dd($data);
-        // $session->set($data);
+        $session->set('Placeholder', true);
         return view('project', $data);
     }
     public function create()
@@ -242,9 +244,6 @@ class ProjectController extends BaseController
         $session = \Config\Services::session();
         $projectModel = new ProjectModel();
         $selectedId = $this->request->getPost('selectId');
-        $data = [
-            'selectId' => $selectedId
-        ];
         $dataCount = count($selectedId);
         // dd($dataCount);
         $result = $projectModel->deleteProject($selectedId, $dataCount);

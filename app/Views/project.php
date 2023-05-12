@@ -1,12 +1,13 @@
 <?= $this->extend('layout/dashboard/template'); ?>
 <?= $this->section('content'); ?>
+
 <!-- Main Content -->
 <div id="content">
     <!-- Begin Page Content -->
     <div class="container-fluid relative">
         <?php $validation = \Config\Services::validation(); ?>
         <!-- Page Heading -->
-        <div class="grid grid-cols-2">
+        <div class="grid grid-cols-2 ">
             <div class="cols-span-3 flex w-fit">
                 <h1 class="h3 text-gray-800">Project</h1>
             </div>
@@ -60,21 +61,23 @@
                         <div class="cols-span-2 flex items-center justify-center">Filter</div>
                         <div class="grid grid-rows-2 justify-center items-center">
                             <p>Project Name</p>
-                            <input type="text" value="<?php if (!isset($filterProjectNamePH)) {
-                                                            echo "";
-                                                        } else {
-                                                            echo $filterProjectNamePH;
-                                                        } ?>" name="filterProjectName" class="border border-gray-300 text-gray-900 sm:text-sm rounded-sm focus:ring-primary-600 focus:border-primary-600 block w-full">
+                            <?php if (isset($filter)) { ?>
+                                <input type="text" value="<?= $filterProjectNamePH; ?>" name="filterProjectName" class="border border-gray-300 text-gray-900 sm:text-sm rounded-sm focus:ring-primary-600 focus:border-primary-600 block w-full">
+
+                            <?php } else {
+                            ?>
+                                <input type="text" value="" name="filterProjectName" class="border border-gray-300 text-gray-900 sm:text-sm rounded-sm focus:ring-primary-600 focus:border-primary-600 block w-full">
+                            <?php } ?>
                         </div>
                         <div class="grid grid-rows-2 justify-center items-center">
                             <p>Client</p>
                             <select name="filterClient" id="filterClient" class="border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full">
-                                <?php if (isset($filterClientPH)) {
+                                <?php if (isset($filter)) { ?>
+                                    <option name="filterClientPH" value="<?= $filterClientPH; ?>"><?= $filterClientPH; ?></option>
+                                <?php } else {
                                 ?>
-                                    <option selected disabled value="<?= $filterClientPH; ?>"><?= $filterClientPH; ?></option>
-                                <?php
-                                } ?>
-                                <option value="all">All Client</option>
+                                    <option value="all">All Client</option>
+                                <?php } ?>
                                 <?php foreach ($client as $row) : ?>
                                     <option value="<?= $row->client_name; ?>"><?= $row->client_name; ?></option>
                                 <?php endforeach; ?>
@@ -83,12 +86,12 @@
                         <div class="grid grid-rows-2 justify-center items-center">
                             <p>Status</p>
                             <select name="filterStatus" id="filterStatus" class="border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5">
-                                <?php if (isset($filterStatusPH)) {
+                                <?php if (isset($filter)) { ?>
+                                    <option name="filterStatusPH" value="<?= $filterStatusPH; ?>"><?= $filterStatusPH; ?></option>
+                                <?php } else {
                                 ?>
-                                    <option selected disabled value="<?= $filterStatusPH; ?>"><?= $filterStatusPH; ?></option>
-                                <?php
-                                } ?>
-                                <option value="all">All Status</option>
+                                    <option value="all">All Status</option>
+                                <?php } ?>
                                 <option value="OPEN">OPEN</option>
                                 <option value="DOING">DOING</option>
                                 <option value="DONE">DONE</option>
@@ -108,11 +111,12 @@
                 </form>
             </div>
             <div id="crud">
+                <?php helper('form')  ?>
+                <?= form_open('/delete', ['class' => 'deleteBatch']); ?>
                 <div class="w-fit">
                     <div class="grid grid-cols-2 gap-x-1 m-3">
-                        <button data-toggle="modal" data-target="#createModal" class="inline-flex items-center justify-center rounded-md border border-transparent bg-primary-600 px-3 py-1 text-base font-medium text-white hover:bg-primary-700">New</button>
-                        <form action="/delete" class="deleteBatch">
-                            <button @click="deleteCheck()" class="inline-flex items-center justify-center rounded-md border border-transparent bg-primary-600 px-3 py-1 text-base font-medium text-white hover:bg-primary-700">Delete</button>
+                        <button type="button" data-toggle="modal" data-target="#createModal" class="inline-flex items-center justify-center rounded-md border border-transparent bg-primary-600 px-3 py-1 text-base font-medium text-white hover:bg-primary-700">New</button>
+                        <button @click="deleteCheck()" class="inline-flex items-center justify-center rounded-md border border-transparent bg-primary-600 px-3 py-1 text-base font-medium text-white hover:bg-primary-700">Delete</button>
                     </div>
                 </div>
                 <div class="mb-3">
@@ -171,7 +175,7 @@
                     </table>
                     <p>{{message}}</p>
                 </div>
-                </form>
+                <?= form_close(); ?>
             </div>
             <!-- Create Modal-->
             <div class="modal fade" id="createModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -219,7 +223,7 @@
                         </div>
                         <div class="modal-footer">
                             <button data-dismiss="modal" class="w-auto text-white bg-slate-500 hover:bg-slate-800 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-4 py-2.5 text-center  ">Cancel</button>
-                            <button @click="create()" type="submit" class="w-auto text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-4 py-2.5 text-center  ">Create</button>
+                            <button type="submit" class="w-auto text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-4 py-2.5 text-center  ">Create</button>
                         </div>
                         </form>
                     </div>
