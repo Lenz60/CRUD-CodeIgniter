@@ -40,7 +40,7 @@ $routes->get('/project', 'ProjectController');
 $routes->post('/project', 'ProjectController');
 $routes->post('/create', 'ProjectController::create');
 $routes->get('/create', 'ProjectController');
-$routes->post('/filter', 'ProjectController::showTable');
+$routes->post('/filter', 'ProjectController::filter');
 $routes->get('/filter', 'ProjectController');
 $routes->post('/auth/verify', 'AuthController::verify');
 $routes->get('/auth/verify', 'AuthController::verify');

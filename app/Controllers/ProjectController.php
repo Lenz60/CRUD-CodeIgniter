@@ -24,8 +24,29 @@ class ProjectController extends BaseController
             return view('login', $data);
         } else {
             unset($_SESSION['message']);
-            $this->showTable();
-            return view('project');
+            $table = $this->showTable();
+            // dd($table);
+            if ($table['title'] == 'Login') {
+                $data = [
+                    'title' => 'Login',
+                    'message' => 'Session expired, Please login again'
+                ];
+                $session->setFlashdata('message', $data['message']);
+                return view('login', $data);
+            } else {
+                $data = [
+                    'title' => $table['title'],
+                    'name' => $table['name'],
+                    'image' => $table['image'],
+                    'project' => $table['project'],
+                    'client' => $table['client'],
+                    'filterProjectNamePH' => "",
+                    'filterClientPH' => "",
+                    'filterStatusPH' => "",
+                ];
+
+                return view('project', $data);
+            }
         }
     }
 
@@ -35,28 +56,18 @@ class ProjectController extends BaseController
         $token = $_COOKIE['COOKIE-SESSION'];
         $userModel = new UserModel();
         $key = getenv('JWT_SECRET_KEY');
+        $user = $userModel->show($token);
         // helper('jwt');
         //decode header token jwt
-        try {
-            $decoded_token = JWT::decode($token, new Key($key, 'HS256'));
-            $user = $userModel->show($decoded_token->email);
-        } catch (ExpiredException $e) {
-            setcookie('COOKIE-SESSION', null);
-            $session->setFlashdata('message', '<div class="p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-300 dark:bg-gray-800 dark:text-red-400" role="alert">
-        <span class="font-medium">Token Invalid</span>, Please login again
-        </div>');
-            // echo $e->getMessage();
-            return redirect()->to('/auth');
-        }
-        //check if user correct with token payload
-        if (!$user) {
-        } else {
+        if ($user) {
             $data = [
                 'title' => 'Project Data',
                 'name' => $user['name'],
                 'image' => $user['image'],
             ];
             return $data;
+        } else {
+            return false;
         }
     }
 
@@ -64,51 +75,33 @@ class ProjectController extends BaseController
     {
         $session = \Config\Services::session();
         $user = $this->user();
-        if (!$user) {
-            $session->setFlashdata('message', '<div class="p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-300 dark:bg-gray-800 dark:text-red-400" role="alert">
-        <span class="font-medium">Token Invalid</span>, Please login again
-        </div>');
-            // echo $e->getMessage();
-            return redirect()->to('/auth');
-        } else {
+        // dd($user);
+        if ($user) {
             $projectModel = new ProjectModel();
             $projectName = $this->request->getVar('filterProjectName');
             $clientName = $this->request->getVar('filterClient');
             $projectStatus = $this->request->getVar('filterStatus');
-            if ($clientName == null) {
-                $result = $projectModel->showData();
-                if (!$result) {
-                    //Flashdata here
-                } else {
-                    $client = $projectModel->getClient();
-                    $data = [
-                        'title' => $user['title'],
-                        'name' => $user['name'],
-                        'image' => $user['image'],
-                        'project' => $result->getResult(),
-                        'client' => $client->getResult(),
-                    ];
-                }
+            // if ($clientName == null) {
+            $result = $projectModel->showData();
+            if (!$result) {
+                //Flashdata here
             } else {
-                $data = [
-                    'project_name' => $projectName,
-                    'client_id' => $clientName,
-                    'project_status' => $projectStatus,
-                ];
-                $result = $projectModel->showDataWhere($data);
                 $client = $projectModel->getClient();
                 $data = [
+                    'filter' => false,
                     'title' => $user['title'],
                     'name' => $user['name'],
                     'image' => $user['image'],
                     'project' => $result->getResult(),
                     'client' => $client->getResult(),
-                    'filterProjectNamePH' => $projectName,
-                    'filterClientPH' => $clientName,
-                    'filterStatusPH' => $projectStatus,
                 ];
             }
-            return view('project', $data);
+            return $data;
+        } else {
+            $data = [
+                'title' => 'Login'
+            ];
+            return $data;
         }
     }
 
@@ -120,6 +113,9 @@ class ProjectController extends BaseController
         $clientId = $this->request->getVar('filterClient');
         $projectStatus = $this->request->getVar('filterStatus');
 
+        $table = $this->showTable();
+        $user = $this->user();
+
         $data = [
             'project_name' => $projectName,
             'client_id' => $clientId,
@@ -128,13 +124,24 @@ class ProjectController extends BaseController
         $result = $projectModel->showDataWhere($data);
         $client = $projectModel->getClient();
         $data = [
+            'filter' => true,
+            'title' => $table['title'],
+            'name' => $table['name'],
+            'image' => $table['image'],
+            'client' => $table['client'],
             'project' => $result->getResult(),
             'client' => $client->getResult(),
+            'filterProjectNamePH' => $projectName,
+            'filterClientPH' => $clientId,
+            'filterStatusPH' => $projectStatus,
         ];
 
         // dd($data['project']);
         // return $data;
-        return view('project');
+        // echo "Why blank";
+        // dd($data);
+        // $session->set($data);
+        return view('project', $data);
     }
     public function create()
     {

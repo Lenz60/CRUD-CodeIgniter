@@ -20,8 +20,25 @@ class DashboardController extends BaseController
             $session->setFlashdata('message', 'Session expired, Please login again');
             return view('login', $data);
         } else {
-            $this->show();
-            return view('dashboard');
+            $user = $this->show();
+            // dd($user);
+            if ($user['title'] == 'Login') {
+                $data = [
+                    'title' => 'Login',
+                    'message' => 'Session expired, Please login again'
+                ];
+                $session->setFlashdata('message', $data['message']);
+                return view('login', $data);
+            } else {
+                $data = [
+                    'title' => 'Dashboard',
+                    'email' => $user['email'],
+                    'name' => $user['name'],
+                    'image' => $user['image'],
+                    'date_created' => $user['date_created']
+                ];
+                return view('dashboard', $data);
+            }
         }
     }
 
@@ -31,23 +48,9 @@ class DashboardController extends BaseController
         $token = $_COOKIE['COOKIE-SESSION'];
         $model = new UserModel();
         $key = getenv('JWT_SECRET_KEY');
-        try {
-            $decoded_token = JWT::decode($token, new Key($key, 'HS256'));
-            $result = $model->show($decoded_token->email);
-        } catch (ExpiredException $e) {
-            setcookie('COOKIE-SESSION', null);
-            $session->setFlashdata('message', '<div class="p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-300 dark:bg-gray-800 dark:text-red-400" role="alert">
-        <span class="font-medium">Token Invalid</span>, Please login again
-        </div>');
-            // echo $e->getMessage();
-            return redirect()->to('/auth');
-        }
-
-        if (!$result) {
-            $data['title'] = 'Login';
-            $session->setFlashdata('message', 'Session expired, Please login again');
-            return view('login', $data);
-        } else {
+        $result = $model->show($token);
+        // dd($result);
+        if ($result) {
             $data = [
                 'title' => 'Dashboard',
                 'email' => $result['email'],
@@ -55,8 +58,15 @@ class DashboardController extends BaseController
                 'image' => $result['image'],
                 'date_created' => $result['date_created']
             ];
-            $session->set('title', $data['title']);
-            return view('dashboard', $data);
+            // $session->set('title', $data['title']);
+            return $data;
+        } else {
+            $data = [
+                'title' => 'Login',
+            ];
+
+            return $data;
         }
+        // dd($result);
     }
 }

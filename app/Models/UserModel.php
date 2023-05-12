@@ -4,6 +4,9 @@ namespace App\Models;
 
 use CodeIgniter\Exceptions\PageNotFoundException;
 use CodeIgniter\Model;
+use Firebase\JWT\ExpiredException;
+use Firebase\JWT\JWT;
+use Firebase\JWT\Key;
 
 class UserModel extends Model
 {
@@ -134,12 +137,18 @@ class UserModel extends Model
         }
     }
 
-    public function show($email)
+    public function show($token)
     {
         $session = \Config\Services::session();
         $model = new UserModel();
+        $key = getenv('JWT_SECRET_KEY');
+        try {
+            $decoded_token = JWT::decode($_COOKIE['COOKIE-SESSION'], new Key($key, 'HS256'));
+        } catch (ExpiredException $e) {
+            return null;
+        }
         $builder = $this->table('users');
-        $data = $builder->where('email', $email)->first();
+        $data = $builder->where('email', $decoded_token->email)->first();
         if (!$data) {
             return false;
         } else {

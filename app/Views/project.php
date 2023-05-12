@@ -153,6 +153,8 @@
                         </tr>
                     </thead>
                     <tbody class="text-black">
+                        <?php //dd($project);
+                        ?>
                         <?php foreach ($project as $row) : ?>
                             <tr>
                                 <td><input name="selectId" value="<?= $row->project_name; ?>" type="checkbox"></td>
