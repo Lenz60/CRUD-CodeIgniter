@@ -7,7 +7,7 @@
     <div class="container-fluid relative">
         <?php $validation = \Config\Services::validation(); ?>
         <!-- Page Heading -->
-        <div class="grid grid-cols-2 border-2 border-green-600">
+        <div class="grid grid-cols-2">
             <div class="cols-span-3 flex w-fit">
                 <h1 class="h3 text-gray-800">Project</h1>
             </div>
