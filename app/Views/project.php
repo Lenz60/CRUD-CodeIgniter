@@ -1,6 +1,5 @@
 <?= $this->extend('layout/dashboard/template'); ?>
 <?= $this->section('content'); ?>
-<?php header("Content-Type: application/json", true); ?>
 <!-- Main Content -->
 <div id="content">
     <!-- Begin Page Content -->
@@ -109,11 +108,11 @@
                 </form>
             </div>
             <div id="crud">
-                <?= form_open('/delete', ['class' => 'deleteBatch']); ?>
                 <div class="w-fit">
                     <div class="grid grid-cols-2 gap-x-1 m-3">
                         <button data-toggle="modal" data-target="#createModal" class="inline-flex items-center justify-center rounded-md border border-transparent bg-primary-600 px-3 py-1 text-base font-medium text-white hover:bg-primary-700">New</button>
-                        <button @click="deleteCheck()" class="inline-flex items-center justify-center rounded-md border border-transparent bg-primary-600 px-3 py-1 text-base font-medium text-white hover:bg-primary-700">Delete</button>
+                        <form action="/delete" class="deleteBatch">
+                            <button @click="deleteCheck()" class="inline-flex items-center justify-center rounded-md border border-transparent bg-primary-600 px-3 py-1 text-base font-medium text-white hover:bg-primary-700">Delete</button>
                     </div>
                 </div>
                 <div class="mb-3">
@@ -159,7 +158,7 @@
                             ?>
                             <?php foreach ($project as $row) : ?>
                                 <tr>
-                                    <td><input class="selectId" name="selectId[]" value="<?= $row->project_id; ?>" type="checkbox"><?= $row->project_id; ?></td>
+                                    <td><input class="selectId" name="selectId[]" value="<?= $row->project_id; ?>" type="checkbox"></td>
                                     <td><a href="/edit">edit</a></td>
                                     <td><span id="projectName" name="projectName"><?= $row->project_name; ?></span></td>
                                     <td><span id="clientName" name="clientName"><?= $row->client_name; ?></span></td>
@@ -172,7 +171,7 @@
                     </table>
                     <p>{{message}}</p>
                 </div>
-                <?= form_close(); ?>
+                </form>
             </div>
             <!-- Create Modal-->
             <div class="modal fade" id="createModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -220,7 +219,7 @@
                         </div>
                         <div class="modal-footer">
                             <button data-dismiss="modal" class="w-auto text-white bg-slate-500 hover:bg-slate-800 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-4 py-2.5 text-center  ">Cancel</button>
-                            <button type="submit" class="w-auto text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-4 py-2.5 text-center  ">Create</button>
+                            <button @click="create()" type="submit" class="w-auto text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-4 py-2.5 text-center  ">Create</button>
                         </div>
                         </form>
                     </div>

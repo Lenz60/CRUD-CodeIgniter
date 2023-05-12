@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use App\Controllers\BaseController;
 use App\Models\ProjectModel;
+use App\Models\ClientModel;
 use App\Models\UserModel;
 use CodeIgniter\Router\Exceptions\RedirectException;
 use Firebase\JWT\ExpiredException;
@@ -81,22 +82,43 @@ class ProjectController extends BaseController
         // dd($user);
         if ($user) {
             $projectModel = new ProjectModel();
+            $clientModel = new ClientModel();
             $projectName = $this->request->getVar('filterProjectName');
             $clientName = $this->request->getVar('filterClient');
             $projectStatus = $this->request->getVar('filterStatus');
-            // if ($clientName == null) {
-            $result = $projectModel->showData();
-            if (!$result) {
-                //Flashdata here
+            if ($clientName == null) {
+                $result = $projectModel->showData();
+                if (!$result) {
+                    //Flashdata here
+                } else {
+                    $client = $clientModel->getClient();
+                    $data = [
+                        'title' => $user['title'],
+                        'name' => $user['name'],
+                        'image' => $user['image'],
+                        'project' => $result->getResult(),
+                        'client' => $client->getResult(),
+                    ];
+                }
             } else {
-                $client = $projectModel->getClient();
+                $data = [
+                    'project_name' => $projectName,
+                    'client_id' => $clientName,
+                    'project_status' => $projectStatus,
+                ];
+                $result = $projectModel->showDataWhere($data);
+                $client = $clientModel->getClient();
                 $data = [
                     'title' => $user['title'],
                     'name' => $user['name'],
                     'image' => $user['image'],
                     'project' => $result->getResult(),
                     'client' => $client->getResult(),
+                    'filterProjectNamePH' => $projectName,
+                    'filterClientPH' => $clientName,
+                    'filterStatusPH' => $projectStatus,
                 ];
+                // dd($data);
             }
             return $data;
         } else {
@@ -111,6 +133,7 @@ class ProjectController extends BaseController
     {
         $session = \Config\Services::session();
         $projectModel = new ProjectModel();
+        $clientModel = new ClientModel();
         $projectName = $this->request->getVar('filterProjectName');
         $clientId = $this->request->getVar('filterClient');
         $projectStatus = $this->request->getVar('filterStatus');
@@ -124,7 +147,7 @@ class ProjectController extends BaseController
             'project_status' => $projectStatus,
         ];
         $result = $projectModel->showDataWhere($data);
-        $client = $projectModel->getClient();
+        $client = $clientModel->getClient();
         $data = [
             'title' => $table['title'],
             'name' => $table['name'],
