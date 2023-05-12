@@ -198,6 +198,15 @@
                 </div>
             </div>
         </div>
+        <script>
+            // function closeNotif(id) {
+            //     if (id) {
+            //         <?php //unset($_SESSION['crud-message']);
+                        //         
+                        ?>
+            //     }
+            // }
+        </script>
     </div>
     <!-- End of Main Content -->
     <?= $this->endSection('content'); ?>
