@@ -1,5 +1,6 @@
 <?= $this->extend('layout/dashboard/template'); ?>
 <?= $this->section('content'); ?>
+<?php header("Content-Type: application/json", true); ?>
 <!-- Main Content -->
 <div id="content">
     <!-- Begin Page Content -->
@@ -107,132 +108,149 @@
                     </div>
                 </form>
             </div>
-            <div class="w-fit">
-
-                <div class="grid grid-cols-2 gap-x-1 m-3">
-                    <button data-toggle="modal" data-target="#createModal" class="inline-flex items-center justify-center rounded-md border border-transparent bg-primary-600 px-3 py-1 text-base font-medium text-white hover:bg-primary-700">New</button>
-                    <button class="inline-flex items-center justify-center rounded-md border border-transparent bg-primary-600 px-3 py-1 text-base font-medium text-white hover:bg-primary-700">Delete</button>
+            <div id="crud">
+                <?= form_open('/delete', ['class' => 'deleteBatch']); ?>
+                <div class="w-fit">
+                    <div class="grid grid-cols-2 gap-x-1 m-3">
+                        <button data-toggle="modal" data-target="#createModal" class="inline-flex items-center justify-center rounded-md border border-transparent bg-primary-600 px-3 py-1 text-base font-medium text-white hover:bg-primary-700">New</button>
+                        <button @click="deleteCheck()" class="inline-flex items-center justify-center rounded-md border border-transparent bg-primary-600 px-3 py-1 text-base font-medium text-white hover:bg-primary-700">Delete</button>
+                    </div>
                 </div>
-            </div>
-            <div class="mb-3">
-                <?php $msg = session()->getFlashdata('message') ?>
-                <?php if ($msg) { ?>
-                    <?php
-                    if (is_array($msg)) {
-                    ?>
-                        <div class="bg-red-200 w-auto bg-opacity-50 border border-red-400 text-red-700 px-3 py-2 rounded relative" role="alert">
-                            <?php foreach (session()->getFlashdata('message') as $row) : ?>
-                                <p class="block sm:inline"><?= $row; ?></p>
-                                <br>
-                            <?php endforeach; ?>
-                        </div>
-                    <?php
-                    } else {
-                    ?>
-                        <div class="bg-green-200 w-auto bg-opacity-50 border border-green-400 text-green-700 px-3 py-2 rounded relative" role="alert">
-                            <span class="block sm:inline"><?= $msg; ?></span>
-                        </div>
+                <div class="mb-3">
+                    <?php $msg = session()->getFlashdata('message') ?>
+                    <?php if ($msg) { ?>
+                        <?php
+                        if (is_array($msg)) {
+                        ?>
+                            <div class="bg-red-200 w-auto bg-opacity-50 border border-red-400 text-red-700 px-3 py-2 rounded relative" role="alert">
+                                <?php foreach (session()->getFlashdata('message') as $row) : ?>
+                                    <p class="block sm:inline"><?= $row; ?></p>
+                                    <br>
+                                <?php endforeach; ?>
+                            </div>
+                        <?php
+                        } else {
+                        ?>
+                            <div class="bg-green-200 w-auto bg-opacity-50 border border-green-400 text-green-700 px-3 py-2 rounded relative" role="alert">
+                                <span class="block sm:inline"><?= $msg; ?></span>
+                            </div>
+                        <?php
+                        } ?>
                     <?php
                     } ?>
-                <?php
-                } ?>
-            </div>
-            <div id='table'>
-                <table id="example" class="table-auto border-2 border-gray-400 cell-border">
-                    <thead class="bg-gray-400">
-                        <tr class="text-black">
-                            <th>
-                                <input name="selectAll " type="checkbox">
-                            </th>
-                            <th>Action</th>
-                            <th>Project Name</th>
-                            <th>Client</th>
-                            <th>Project Start</th>
-                            <th>Project End</th>
-                            <th>Status</th>
-                        </tr>
-                    </thead>
-                    <tbody class="text-black">
-                        <?php //dd($project);
-                        ?>
-                        <?php foreach ($project as $row) : ?>
-                            <tr>
-                                <td><input name="selectId" value="<?= $row->project_name; ?>" type="checkbox"></td>
-                                <td><a href="/edit">edit</a></td>
-                                <td><?= $row->project_name; ?></td>
-                                <td><?= $row->client_name; ?></td>
-                                <td id="dateProjectStart">{{translateMonth(<?= strtotime($row->project_start); ?>)}}</td>
-                                <td id="dateProjectStart">{{translateMonth(<?= strtotime($row->project_end); ?>)}}</td>
-                                <td><?= $row->project_status; ?></td>
+                </div>
+                <div id='table'>
+                    <table id="example" class="table-auto border-2 border-gray-400 cell-border">
+                        <thead class="bg-gray-400">
+                            <tr class="text-black">
+                                <th>
+                                    <input id="selectAll" name="selectAll " type="checkbox">
+                                </th>
+                                <th>Action</th>
+                                <th>Project Name</th>
+                                <th>Client</th>
+                                <th>Project Start</th>
+                                <th>Project End</th>
+                                <th>Status</th>
                             </tr>
-                        <?php endforeach; ?>
-                    </tbody>
-                </table>
-                <p>{{message}}</p>
+                        </thead>
+                        <tbody class="text-black">
+                            <?php //dd($project);
+                            ?>
+                            <?php foreach ($project as $row) : ?>
+                                <tr>
+                                    <td><input class="selectId" name="selectId[]" value="<?= $row->project_id; ?>" type="checkbox"><?= $row->project_id; ?></td>
+                                    <td><a href="/edit">edit</a></td>
+                                    <td><span id="projectName" name="projectName"><?= $row->project_name; ?></span></td>
+                                    <td><span id="clientName" name="clientName"><?= $row->client_name; ?></span></td>
+                                    <td id="dateProjectStart"><span id="dateProjectStart" name="dateProjectStart">{{translateMonth(<?= strtotime($row->project_start); ?>)}}</span></td>
+                                    <td id="dateProjectEnd"><span id="dateProjectEnd" name="dateProjectEnd">{{translateMonth(<?= strtotime($row->project_end); ?>)}}</span></td>
+                                    <td><span id="projectStatus" name="projectName"><?= $row->project_status; ?></span></td>
+                                </tr>
+                            <?php endforeach; ?>
+                        </tbody>
+                    </table>
+                    <p>{{message}}</p>
+                </div>
+                <?= form_close(); ?>
+            </div>
+            <!-- Create Modal-->
+            <div class="modal fade" id="createModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Create a new project</h5>
+                            <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">×</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <form id="createForm" action="/create" method="POST">
+                                <div>
+                                    <label for="newProjectName" class="block mb-2 text-sm font-medium text-gray-900 ">Project Name</label>
+                                    <input type="text" name="newProjectName" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 ">
+                                    <small class="text-red-700"><?= $validation->getError('newProjectName'); ?></small>
+                                </div>
+                                <div>
+                                    <label for="newProjectClient" class="block mb-2 text-sm font-medium text-gray-900  ">Client Name</label>
+                                    <select name="newProjectClient" id="newProjectClient" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5  ">
+                                        <?php foreach ($client as $row) : ?>
+                                            <option value="<?= $row->client_id; ?>"><?= $row->client_name; ?></option>
+                                        <?php endforeach; ?>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label for="newProjectStart" class="block mb-2 text-sm font-medium text-gray-900  ">Project Start</label>
+                                    <input type="date" max="<?= date('Y-m-d'); ?>" name="newProjectStart" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 ">
+                                    <small class="text-red-700"><?= $validation->getError('newProjectStart'); ?></small>
+                                </div>
+                                <div>
+                                    <label for="newProjectEnd" class="block mb-2 text-sm font-medium text-gray-900  ">Project End</label>
+                                    <input type="date" name="newProjectEnd" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 ">
+                                    <small class="text-red-700"><?= $validation->getError('newProjectEnd'); ?></small>
+                                </div>
+                                <div>
+                                    <label for="newProjectClient" class="block mb-2 text-sm font-medium text-gray-900  ">Project Status</label>
+                                    <select name="newProjectStatus" id="newProjectStatus" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5  ">
+                                        <option value="OPEN">OPEN</option>
+                                        <option value="DOING">DOING</option>
+                                        <option value="DONE">DONE</option>
+                                    </select>
+                                </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button data-dismiss="modal" class="w-auto text-white bg-slate-500 hover:bg-slate-800 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-4 py-2.5 text-center  ">Cancel</button>
+                            <button type="submit" class="w-auto text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-4 py-2.5 text-center  ">Create</button>
+                        </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <!-- Delete Modal-->
+            <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Create a new project</h5>
+                            <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">×</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <form id="createForm" action="/delete" method="POST">
+                                <input type="text" id="eProjectName">
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button data-dismiss="modal" class="w-auto text-white bg-slate-500 hover:bg-slate-800 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-4 py-2.5 text-center  ">Cancel</button>
+                            <button @click="create(); checkAlert(<?php $msg; ?>);" type="submit" class="w-auto text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-4 py-2.5 text-center  ">Create</button>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
         <!-- /.container-fluid -->
-        <!-- Create Modal-->
-
-        <div class="modal fade" id="createModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Create a new project</h5>
-                        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">×</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <form id="createForm" action="/create" method="POST">
-                            <div>
-                                <label for="newProjectName" class="block mb-2 text-sm font-medium text-gray-900 ">Project Name</label>
-                                <input type="text" name="newProjectName" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 ">
-                                <small class="text-red-700"><?= $validation->getError('newProjectName'); ?></small>
-                            </div>
-                            <div>
-                                <label for="newProjectClient" class="block mb-2 text-sm font-medium text-gray-900  ">Client Name</label>
-                                <select name="newProjectClient" id="newProjectClient" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5  ">
-                                    <?php foreach ($client as $row) : ?>
-                                        <option value="<?= $row->client_id; ?>"><?= $row->client_name; ?></option>
-                                    <?php endforeach; ?>
-                                </select>
-                            </div>
-                            <div>
-                                <label for="newProjectStart" class="block mb-2 text-sm font-medium text-gray-900  ">Project Start</label>
-                                <input type="date" max="<?= date('Y-m-d'); ?>" name="newProjectStart" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 ">
-                                <small class="text-red-700"><?= $validation->getError('newProjectStart'); ?></small>
-                            </div>
-                            <div>
-                                <label for="newProjectEnd" class="block mb-2 text-sm font-medium text-gray-900  ">Project End</label>
-                                <input type="date" name="newProjectEnd" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 ">
-                                <small class="text-red-700"><?= $validation->getError('newProjectEnd'); ?></small>
-                            </div>
-                            <div>
-                                <label for="newProjectClient" class="block mb-2 text-sm font-medium text-gray-900  ">Project Status</label>
-                                <select name="newProjectStatus" id="newProjectStatus" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5  ">
-                                    <option value="OPEN">OPEN</option>
-                                    <option value="DOING">DOING</option>
-                                    <option value="DONE">DONE</option>
-                                </select>
-                            </div>
-                        </form>
-                    </div>
-                    <div class="modal-footer">
-                        <button data-dismiss="modal" class="w-auto text-white bg-slate-500 hover:bg-slate-800 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-4 py-2.5 text-center  ">Cancel</button>
-                        <button @click="create(); checkAlert(<?php $msg; ?>);" type="submit" class="w-auto text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-4 py-2.5 text-center  ">Create</button>
-                    </div>
-                </div>
-            </div>
-        </div>
         <script>
-            // function closeNotif(id) {
-            //     if (id) {
-            //         <?php //unset($_SESSION['crud-message']);
-                        //         
-                        ?>
-            //     }
-            // }
         </script>
     </div>
 

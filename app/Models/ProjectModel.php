@@ -14,7 +14,7 @@ class ProjectModel extends Model
     public function showData()
     {
         $builder = $this->table('tb_m_project');
-        $builder->select('Project.project_name, Client.client_name, Project.project_start, Project.project_end, Project.project_status');
+        $builder->select('Project.project_id, Project.project_name, Client.client_name, Project.project_start, Project.project_end, Project.project_status');
         $builder->from('tb_m_project as Project');
         $builder->join('tb_m_client as Client', 'Client.client_id = Project.client_id');
         $builder->groupBy('Project.project_id');
@@ -28,7 +28,7 @@ class ProjectModel extends Model
         $clientName = $data['client_id'];
         $projectStatus = $data['project_status'];
         $builder = $this->table('tb_m_project');
-        $builder->select('Project.project_name, Client.client_name, Project.project_start, Project.project_end, Project.project_status');
+        $builder->select('Project.project_id, Project.project_name, Client.client_name, Project.project_start, Project.project_end, Project.project_status');
         $builder->from('tb_m_project as Project');
         $builder->join('tb_m_client as Client', 'Client.client_id = Project.client_id');
         if ($projectName == "") {
@@ -97,5 +97,14 @@ class ProjectModel extends Model
         } else {
             return false;
         }
+    }
+    public function deleteProject($id, $dataCount)
+    {
+        $builder = $this->table('tb_m_project');
+        for ($i = 0; $i < $dataCount; $i++) {
+            $builder->where('project_id', $id[$i]);
+            $data = $builder->delete();
+        }
+        return true;
     }
 }

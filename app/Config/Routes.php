@@ -40,6 +40,8 @@ $routes->get('/project', 'ProjectController');
 $routes->post('/project', 'ProjectController');
 $routes->post('/create', 'ProjectController::create');
 $routes->get('/create', 'ProjectController');
+$routes->post('/delete', 'ProjectController::delete');
+$routes->get('/delete', 'ProjectController');
 $routes->post('/filter', 'ProjectController::filter');
 $routes->get('/filter', 'ProjectController');
 $routes->post('/auth/verify', 'AuthController::verify');

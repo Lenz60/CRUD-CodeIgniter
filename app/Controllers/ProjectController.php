@@ -9,12 +9,15 @@ use CodeIgniter\Router\Exceptions\RedirectException;
 use Firebase\JWT\ExpiredException;
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
+use CodeIgniter\Format\JSONFormatter;
+use PHPUnit\Util\Json;
 
 class ProjectController extends BaseController
 {
 
     public function index()
     {
+        helper('form');
         $session = \Config\Services::session();
         //check session
         //if no session exists return login
@@ -210,5 +213,35 @@ class ProjectController extends BaseController
             $session->setFlashdata('message', 'Project successfully created');
             return view('project', $data);
         }
+    }
+    public function delete()
+    {
+        $session = \Config\Services::session();
+        $projectModel = new ProjectModel();
+        $selectedId = $this->request->getPost('selectId');
+        $data = [
+            'selectId' => $selectedId
+        ];
+        $dataCount = count($selectedId);
+        // dd($dataCount);
+        $result = $projectModel->deleteProject($selectedId, $dataCount);
+        $table = $this->showTable();
+        $data = [
+            'title' => $table['title'],
+            'name' => $table['name'],
+            'image' => $table['image'],
+            'project' => $table['project'],
+            'client' => $table['client'],
+        ];
+        // dd($result);
+        if ($result) {
+            $session->setFlashdata('message', 'Project successfully deleted');
+            return json_encode(['status' => 'success']);
+        } else {
+            $session->setFlashdata('message', 'Failed to Delete Project');
+            return json_encode(['status' => 'failed']);
+        }
+        // dd($data);
+
     }
 }
