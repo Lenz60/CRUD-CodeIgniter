@@ -9,8 +9,51 @@
     <div class="container-fluid">
 
         <!-- Page Heading -->
-        <div class="d-sm-flex align-items-center justify-content-between mb-4">
-            <h1 class="h3 mb-0 text-gray-800">Project</h1>
+        <div class="grid grid-cols-2 border-2 border-green-600">
+            <div class="cols-span-3 flex w-fit">
+                <h1 class="h3 text-gray-800">Project</h1>
+            </div>
+            <!-- <div class="grid border-2 border-red-500 left-[70%] absolute">
+                <?php
+                //if (session()->getFlashdata('crud-message-success')) {
+                ?>
+                    <div class="w-auto bg-green-200 border border-green-400 text-green-700 px-4 py-3 rounded relative" role="alert">
+                        <span class="block sm:inline"><? //= session()->getFlashdata('crud-message-success'); 
+                                                        ?></span>
+                    </div>
+                    <button type="button" class="ml-auto -mx-1.5 -my-1.5 bg-blue-50 text-blue-500 rounded-lg focus:ring-2 focus:ring-blue-400 p-1.5 hover:bg-blue-200 inline-flex h-8 w-8 dark:bg-gray-800 dark:text-blue-400 dark:hover:bg-gray-700" data-dismiss-target="#alert-1" aria-label="Close">
+                        <span class="sr-only">Close</span>
+                        <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                            <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path>
+                        </svg>
+                    </button>
+                <?php
+                //} elseif (session()->getFlashdata('crud-message')) {
+                ?>
+                    <?php
+                    //$msg = session()->getFlashdata('crud-message');
+                    //foreach (session()->getFlashdata('crud-message') as $rowmsg) : 
+                    ?>
+                        <div id="alertMsg" <?php //if ($rowmsg == "") {
+                                            ?> hidden <?php
+                                                        //} 
+                                                        ?> class="bg-red-200 w-auto bg-opacity-50 border border-red-400 text-red-700 px-3 py-2 rounded relative" role="alert">
+                            <span class="block sm:inline">
+                                <? //= $rowmsg 
+                                ?>
+                            </span>
+                            <button id="idCloseNotif" type="button" class=" text-red-400 rounded-lg ml-auto -mx-1.5 -my-1.5 hover:text-red-500 " onclick="closeNotif(this.id)" aria-label="Close">
+                                <span class="sr-only">Dismiss</span>
+                                <i class="fa-solid fa-xmark"></i>
+                            </button>
+                        </div>
+                    <?php //endforeach 
+                    ?>
+                <?php
+                //} else {
+                //}
+                ?>
+            </div> -->
         </div>
 
         <div>
