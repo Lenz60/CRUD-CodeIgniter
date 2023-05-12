@@ -173,7 +173,8 @@
         <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
         <script src="https://cdn.datatables.net/plug-ins/1.13.4/pagination/extjs.js"></script>
 
-
+        <!-- sweet alert -->
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
         <!-- Core plugin JavaScript-->
         <script src="/assets/jquery-easing/jquery.easing.min.js"></script>

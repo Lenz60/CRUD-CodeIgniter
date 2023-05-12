@@ -2,12 +2,9 @@
 <?= $this->section('content'); ?>
 <!-- Main Content -->
 <div id="content">
-
-
-
     <!-- Begin Page Content -->
-    <div class="container-fluid">
-
+    <div class="container-fluid relative">
+        <?php $validation = \Config\Services::validation(); ?>
         <!-- Page Heading -->
         <div class="grid grid-cols-2 border-2 border-green-600">
             <div class="cols-span-3 flex w-fit">
@@ -111,10 +108,34 @@
                 </form>
             </div>
             <div class="w-fit">
+
                 <div class="grid grid-cols-2 gap-x-1 m-3">
                     <button data-toggle="modal" data-target="#createModal" class="inline-flex items-center justify-center rounded-md border border-transparent bg-primary-600 px-3 py-1 text-base font-medium text-white hover:bg-primary-700">New</button>
                     <button class="inline-flex items-center justify-center rounded-md border border-transparent bg-primary-600 px-3 py-1 text-base font-medium text-white hover:bg-primary-700">Delete</button>
                 </div>
+            </div>
+            <div class="mb-3">
+                <?php $msg = session()->getFlashdata('message') ?>
+                <?php if ($msg) { ?>
+                    <?php
+                    if (is_array($msg)) {
+                    ?>
+                        <div class="bg-red-200 w-auto bg-opacity-50 border border-red-400 text-red-700 px-3 py-2 rounded relative" role="alert">
+                            <?php foreach (session()->getFlashdata('message') as $row) : ?>
+                                <p class="block sm:inline"><?= $row; ?></p>
+                                <br>
+                            <?php endforeach; ?>
+                        </div>
+                    <?php
+                    } else {
+                    ?>
+                        <div class="bg-green-200 w-auto bg-opacity-50 border border-green-400 text-green-700 px-3 py-2 rounded relative" role="alert">
+                            <span class="block sm:inline"><?= $msg; ?></span>
+                        </div>
+                    <?php
+                    } ?>
+                <?php
+                } ?>
             </div>
             <div id='table'>
                 <table id="example" class="table-auto border-2 border-gray-400 cell-border">
@@ -150,6 +171,7 @@
         </div>
         <!-- /.container-fluid -->
         <!-- Create Modal-->
+
         <div class="modal fade" id="createModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
@@ -164,6 +186,7 @@
                             <div>
                                 <label for="newProjectName" class="block mb-2 text-sm font-medium text-gray-900 ">Project Name</label>
                                 <input type="text" name="newProjectName" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 ">
+                                <small class="text-red-700"><?= $validation->getError('newProjectName'); ?></small>
                             </div>
                             <div>
                                 <label for="newProjectClient" class="block mb-2 text-sm font-medium text-gray-900  ">Client Name</label>
@@ -176,10 +199,12 @@
                             <div>
                                 <label for="newProjectStart" class="block mb-2 text-sm font-medium text-gray-900  ">Project Start</label>
                                 <input type="date" max="<?= date('Y-m-d'); ?>" name="newProjectStart" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 ">
+                                <small class="text-red-700"><?= $validation->getError('newProjectStart'); ?></small>
                             </div>
                             <div>
                                 <label for="newProjectEnd" class="block mb-2 text-sm font-medium text-gray-900  ">Project End</label>
                                 <input type="date" name="newProjectEnd" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 ">
+                                <small class="text-red-700"><?= $validation->getError('newProjectEnd'); ?></small>
                             </div>
                             <div>
                                 <label for="newProjectClient" class="block mb-2 text-sm font-medium text-gray-900  ">Project Status</label>
@@ -193,7 +218,7 @@
                     </div>
                     <div class="modal-footer">
                         <button data-dismiss="modal" class="w-auto text-white bg-slate-500 hover:bg-slate-800 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-4 py-2.5 text-center  ">Cancel</button>
-                        <button @click="create" type="submit" class="w-auto text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-4 py-2.5 text-center  ">Create</button>
+                        <button @click="create(); checkAlert(<?php $msg; ?>);" type="submit" class="w-auto text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-4 py-2.5 text-center  ">Create</button>
                     </div>
                 </div>
             </div>
@@ -208,5 +233,7 @@
             // }
         </script>
     </div>
+
+
     <!-- End of Main Content -->
     <?= $this->endSection('content'); ?>
