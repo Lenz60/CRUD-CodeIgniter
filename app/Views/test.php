@@ -1,48 +1,58 @@
-<!-- Custom fonts for this template-->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-<link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+<!DOCTYPE html>
+<html lang="en">
 
-<!-- Custom styles for this template-->
-<link href="/assets/css/sb-admin-2.min.css" rel="stylesheet">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- Custom fonts for this template-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
 
-<!-- Tailwindcss -->
-<link rel="stylesheet" href="/css/app.css">
+    <!-- Custom styles for this template-->
+    <link href="/assets/css/sb-admin-2.min.css" rel="stylesheet">
+
+    <!-- Tailwindcss -->
+    <link rel="stylesheet" href="/css/app.css">
 
 
-<!-- datatables -->
-<link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.css" />
-<!-- <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css"> -->
+    <!-- datatables -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.css" />
+    <!-- <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css"> -->
+</head>
 
-<li style="font-style:bold" title="rate on skill" class="skill_rating"><a data-toggle="modal" title="Add this item" class="open-AddBookDialog" href="#addBookDialog" data-id='5'><i class="fa fa-anchor" aria-hidden="true"></i> Click me</a></li>
-
-<!-- Modal -->
-
-<div class="modal fade" id="addBookDialog" tabindex="-1" role="dialog" aria-labelledby="addBookDialog">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="myModalLabel">Search</h4>
-            </div>
-            <div class="modal-body">
-                <div class="form-group">
-                    <input type="text" name="bookId" id="bookId" value="" />
-                </div>
-
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default"><span>Search</span></button>
-            </div>
-        </div>
+<body>
+    <div id="crud">
+        <button @click=editData()>aaa</button>
+        <table id="example">
+            <thead class="bg-gray-400">
+                <tr class="text-black">
+                    <th>
+                        <input id="selectAll" name="selectAll " type="checkbox">
+                    </th>
+                    <th>Action</th>
+                    <th>Project Name</th>
+                    <th>Client</th>
+                    <th>Project Start</th>
+                    <th>Project End</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody class="text-black">
+                <tr>
+                    <td><input class="selectId" name="selectId[]" value="1" type="checkbox"></td>
+                    <td class="flex items-center justify-center"><button is="edit" @click="editData" value="editData1" name="editData" value="echoo" type="button" class="rounded-md border border-transparent bg-primary-600 px-3 py-1 text-base font-medium text-white hover:bg-primary-700">edit</button></td>
+                    <td><span id="projectName" name="projectName">Project Name </span></td>
+                    <td><span id="clientName" name="clientName">Client 1</span></td>
+                    <td id="dateProjectStart"><span id="dateProjectStart" name="dateProjectStart">2022/09/20</span></td>
+                    <td id="dateProjectEnd"><span id="dateProjectEnd" name="dateProjectEnd">2022/09/20</span></td>
+                    <td><span id="projectStatus" name="projectStatus">ongoing</span></td>
+                </tr>
+            </tbody>
+        </table>
     </div>
-
-    <script>
-        $('body').on('click', '.open-AddBookDialog', function() {
-            var myBookId = $(this).data('id');
-            $("#addBookDialog #bookId").val(myBookId);
-            alert(myBookId);
-        });
-    </script>
+    <!-- End of Main Content -->
 
     <!-- Bootstrap core JavaScript-->
     <script src="/assets/jquery/jquery.min.js"></script>
@@ -67,48 +77,8 @@
 
     <!-- Custom scripts for all pages-->
     <script src="/assets/js/sb-admin-2.min.js"></script>
-    <!-- End of Main Content -->
-    <?php
-// date_default_timezone_set("Asia/Jakarta");
-// setlocale(LC_TIME, 'id_ID');
-// $date = date('Y-m-d');
-// echo $date;
-// print_r(date("d-M-Y", strtotime($date)));
 
 
-// function convertDate($date)
-// {
-//     $month = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', '']
-//     $separate = explode("-", $date);
+</body>
 
-// }
-
-// $formatter = IntlDateFormatter::create(
-//     'id_ID',
-//     IntlDateFormatter::FULL,
-//     IntlDateFormatter::FULL,
-//     'Asia/Jakarta',
-//     IntlDateFormatter::GREGORIAN
-// );
-
-// echo (date("d-M-Y", strtotime($formatter)));
-// $newDate = date("d-M-Y", strtotime($date));
-
-// echo strftime("%A, %e %B %Y", $newDate);
-
-// echo time();
-// print_r(date("d-M-Y", strtotime($date)));
-
-
-// $fmt = datefmt_create(
-//     'id_ID',
-//     IntlDateFormatter::FULL,
-//     'Asia/Jakarta',
-//     IntlDateFormatter::GREGORIAN,
-//     'MM/dd/yyyy'
-// );
-// echo 'First Formatted output is ' . datefmt_format($fmt, 0);
-
-
-
-// SELECT Project.project_name, Client.client_name, Project.project_start, Project.project_end, Project.project_status FROM tb_m_project as Project JOIN tb_m_client as Client ON Project.client_id = Client.client_id;
+</html>

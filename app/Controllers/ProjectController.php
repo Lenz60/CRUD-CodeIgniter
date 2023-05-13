@@ -202,12 +202,13 @@ class ProjectController extends BaseController
         ]);
 
         if (!$validate) {
+            $table = $this->showTable();
             $data = [
-                'project_name' => $projectName,
-                'client_id' => $clientId,
-                'project_start' => $projectStart,
-                'project_end' => $projectEnd,
-                'project_status' => $projectStatus,
+                'title' => $table['title'],
+                'name' => $table['name'],
+                'image' => $table['image'],
+                'project' => $table['project'],
+                'client' => $table['client'],
                 'validation' => $this->validator
             ];
             $valmessage = [
@@ -216,7 +217,6 @@ class ProjectController extends BaseController
                 'newProjectEnd' => $validation->getError('newProjectEnd')
             ];
             $session->setFlashdata('message', $valmessage);
-            $this->showTable();
             return view('project', $data);
         } else {
             $data = [
@@ -264,6 +264,96 @@ class ProjectController extends BaseController
             return json_encode(['status' => 'failed']);
         }
         // dd($data);
+    }
+    public function update()
+    {
+        $session = \Config\Services::session();
+        $projectModel = new ProjectModel();
+        $project_id = $this->request->getVar('editProjectId');
+        $project_name = $this->request->getVar('editProjectName');
+        $client_id = $this->request->getVar('editProjectClient');
+        $project_start = $this->request->getVar('editProjectStart');
+        $project_end = $this->request->getVar('editProjectEnd');
+        $project_status = $this->request->getVar('editProjectStatus');
 
+        $validation = \Config\Services::validation();
+
+        $validate = $this->validate([
+            'editProjectName' => [
+                'rules' => 'required',
+                'errors' => [
+                    'required' => 'Please enter project name'
+                ]
+            ],
+            'editProjectStart' => [
+                'rules' => 'required',
+                'errors' => [
+                    'required' => 'Please enter project start date'
+                ]
+            ],
+            'editProjectEnd' => [
+                'rules' => 'required',
+                'errors' => [
+                    'required' => 'Please enter project end date'
+                ]
+            ]
+        ]);
+
+        if (!$validate) {
+            $table = $this->showTable();
+            $data = [
+                'title' => $table['title'],
+                'name' => $table['name'],
+                'image' => $table['image'],
+                'project' => $table['project'],
+                'client' => $table['client'],
+                'validation' => $this->validator
+            ];
+            $valmessage = [
+                'newProjectName' => $validation->getError('newProjectName'),
+                'newProjectStart' => $validation->getError('newProjectStart'),
+                'newProjectEnd' => $validation->getError('newProjectEnd')
+            ];
+            $session->setFlashdata('message', $valmessage);
+            return view('project', $data);
+        } else {
+            $data = [
+                'project_id' => $project_id,
+                'project_name' => $project_name,
+                'client_id' => $client_id,
+                'project_start' => $project_start,
+                'project_end' => $project_end,
+                'project_status' => $project_status,
+            ];
+            $result = $projectModel->updateProject($data);
+            if ($result) {
+                $table = $this->showTable();
+                $data = [
+                    'title' => $table['title'],
+                    'name' => $table['name'],
+                    'image' => $table['image'],
+                    'project' => $table['project'],
+                    'client' => $table['client'],
+                ];
+                $session->setFlashdata('message', 'Project successfully updated');
+                return view('project', $data);
+            } else {
+                $table = $this->showTable();
+                $data = [
+                    'title' => $table['title'],
+                    'name' => $table['name'],
+                    'image' => $table['image'],
+                    'project' => $table['project'],
+                    'client' => $table['client'],
+                ];
+                $valmessage = [
+                    'error' => 'Project update failed'
+                ];
+                $session->setFlashdata('message', $valmessage);
+                return view('project', $data);
+            }
+        }
+
+        // dd($data);
     }
 }

@@ -83,6 +83,7 @@ const crud = Vue.createApp({
                                                 confirmButtonColor: '#2563eb',
                                             })
                                             window.location.replace('/project')
+                                            
                                         }else{
                                             Swal.fire('Changes are not saved', '', 'info')
                                         }
@@ -96,10 +97,7 @@ const crud = Vue.createApp({
                 }
                 return false;
             })
-            // 
-            
-        }
-
+        },
     }
 })
 
@@ -108,6 +106,31 @@ const crud = Vue.createApp({
 filter.mount('#filter')
 crud.mount('#crud')
 vue.mount('#table')
+
+$(document).ready(function(){
+                $(document).on('click', '.editData', function(){
+                    // console.log('hello')
+                    var id=$(this).val();
+                    var projectName=$('#projectName'+id).text();
+                    var clientId=$('#clientId'+id).text();
+                    var clientName=$('#clientName'+id).text();
+                    var dateProjectStart=$('#datePStart'+id).text();
+                    var dateProjectEnd=$('#datePEnd'+id).text();
+                    var projectStatus=$('#projectStatus'+id).text();
+                    console.log(id);
+
+                    
+             
+                    $('#editModal').modal('show');
+                    $('#editProjectId').text(id);
+                    $('#editProjectId').val(id);
+                    $('#editProjectName').val(projectName);
+                    $('#editProjectClient').val(clientId);
+                    $('#editProjectStart').val(dateProjectStart);
+                    $('#editProjectEnd').val(dateProjectEnd);
+                    $('#editProjectStatus').val(projectStatus);
+                });
+            });
 
 
 // var $checkboxes = $('.checkbox-item');

@@ -14,7 +14,7 @@ class ProjectModel extends Model
     public function showData()
     {
         $builder = $this->table('tb_m_project');
-        $builder->select('Project.project_id, Project.project_name, Client.client_name, Project.project_start, Project.project_end, Project.project_status');
+        $builder->select('Project.project_id, Project.project_name, Client.client_id, Client.client_name, Project.project_start, Project.project_end, Project.project_status');
         $builder->from('tb_m_project as Project');
         $builder->join('tb_m_client as Client', 'Client.client_id = Project.client_id');
         $builder->groupBy('Project.project_id');
@@ -28,7 +28,7 @@ class ProjectModel extends Model
         $clientName = $data['client_id'];
         $projectStatus = $data['project_status'];
         $builder = $this->table('tb_m_project');
-        $builder->select('Project.project_id, Project.project_name, Client.client_name, Project.project_start, Project.project_end, Project.project_status');
+        $builder->select('Project.project_id, Project.project_name, Client.client_id, Client.client_name, Project.project_start, Project.project_end, Project.project_status');
         $builder->from('tb_m_project as Project');
         $builder->join('tb_m_client as Client', 'Client.client_id = Project.client_id');
         if ($projectName == "") {
@@ -106,5 +106,31 @@ class ProjectModel extends Model
             $data = $builder->delete();
         }
         return true;
+    }
+    public function updateProject($data)
+    {
+        $model = new ProjectModel();
+        $data = [
+            'project_id' => $data['project_id'],
+            'project_name' => $data['project_name'],
+            'client_id' => $data['client_id'],
+            'project_start' => $data['project_start'],
+            'project_end' => $data['project_end'],
+            'project_status' => $data['project_status']
+        ];
+        // dd($data);
+        $builder = $this->table('tb_m_project');
+        $builder->set('project_name', $data['project_name']);
+        $builder->set('client_id', $data['client_id']);
+        $builder->set('project_start', $data['project_start']);
+        $builder->set('project_end', $data['project_end']);
+        $builder->set('project_status', $data['project_status']);
+        $builder->where('project_id', $data['project_id']);
+        $result = $builder->update();
+        if ($result) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }
