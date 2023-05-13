@@ -16,7 +16,9 @@ const vue = Vue.createApp({
 
 const filter = Vue.createApp({
     data(){
-
+        return{
+            message: 'lorem'
+        }
     },
     methods:{
         resetButton(e){
@@ -147,12 +149,19 @@ $(document).ready(function(){
 
 $(document).ready(function () {
     $('#example').DataTable({
-        "lengthChange" : false,
-        "pageLength": 5,
-        "searching": false,
-        "ordering": false,
-        "pagingType": 'full_numbers',
-        "sPaginationType": 'extStyle'
+        lengthChange : false,
+        pageLength: 5,
+        searching: false,
+        ordering: false,
+        pagingType: 'full_numbers',
+        language : {
+            paginate: {
+                next: '>',
+                previous: '<',
+                last: '>>',
+                first: '<<'
+            }
+        }
         
     }),
     $('#selectAll').click(function (e) {
