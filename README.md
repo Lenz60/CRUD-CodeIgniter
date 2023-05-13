@@ -39,7 +39,7 @@ If not, you can make a new account
 1. Click `Sign up` text in the /login
 2. Register normally, and upload avatar image max 1000x1000 px
 3. If register is successfull, go check your email inbox and click the link embeded in to active the account
-4. If you don't found the email, you can check the spam folder or use a premade account
-5. If your account successfully activated, you can login normally by go to `/login` or the 'base url'
+4. If you don't found the email, you can check the spam folder or use a [premade account](https://github.com/Lenz60/CRUD-CodeIgniter/#Usage)
+5. If your account successfully activated, you can login normally by go to `/login` or the `base url`
 
 Thats all, Thankyou
