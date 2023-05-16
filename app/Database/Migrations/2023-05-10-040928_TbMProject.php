@@ -8,6 +8,7 @@ class TbMProject extends Migration
 {
     public function up()
     {
+        $this->db->disableForeignKeyChecks();
         $this->forge->addField([
             'project_id' => [
                 'type'           => 'INT',
@@ -38,6 +39,7 @@ class TbMProject extends Migration
         $this->forge->addKey('project_id', true);
         $this->forge->addForeignKey('client_id', 'tb_m_client', 'client_id', 'CASCADE', 'CASCADE');
         $this->forge->createTable('tb_m_project');
+        $this->db->enableForeignKeyChecks();
     }
 
     public function down()
