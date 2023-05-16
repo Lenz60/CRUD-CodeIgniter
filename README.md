@@ -17,6 +17,10 @@ this is also built in smtp gmail too.
 5. A little bit using a vue and Jquery and Ajax
 6. All basic CRUD method is fully functionable
 
+## Minimum Requirement
+1. Php version : 8.2.0
+2. Mysql version : 10.4.28-MariaDB
+
 ## Installation
 
 1. Rename the `env` file to `.env`
